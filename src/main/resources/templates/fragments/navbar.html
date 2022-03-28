@@ -1,0 +1,108 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <style>
+        html {
+            font-size: 16px;
+        }
+        body {
+            font-family: 'Roboto', sans-serif;
+            font-size: 16px;
+            font-weight: 400;
+            color: #000;
+            background-color: #fff;
+            min-width: 320px;
+        }
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+        section {
+            padding: 50px 0;
+        }
+        .navbar a {
+            color: #f5f5f7;
+        }
+        a:hover {
+            color: #555;
+        }
+        .navbar-light .navbar-nav .nav-link {
+            color: #111;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+        .navbar-nav .dropdown-menu {
+            right: 0;
+            left: auto;
+        }
+        .top-menu li a::after {
+            content: '';
+            display: block;
+            width: 100%;
+            background-color: #111;
+            height: 1px;
+            transition: all .3s;
+            transform: scale(0);
+        }
+        .top-menu li a:hover::after {
+            transform: scale(1);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg" style="background-color: rgba(0,0,0,0.8)">
+            <div class="container">
+                <a class="navbar-brand" th:href="@{'/'}">E-Shop</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0 top-menu">
+                        <li class="nav-item ms-5">
+                            <a class="nav-link" th:href="@{'/store/'}">Store</a>
+                        </li>
+                        <li class="nav-item ms-5">
+                            <a class="nav-link" th:href="@{'/phone/'}">Phone</a>
+                        </li>
+                        <li class="nav-item ms-5">
+                            <a class="nav-link" th:href="@{'/laptop/'}">Laptop</a>
+                        </li>
+                        <li class="nav-item ms-5">
+                            <a class="nav-link" th:href="@{'/pad/'}">Pad</a>
+                        </li>
+                        <li class="nav-item ms-5">
+                            <a class="nav-link" th:href="@{'/tv/'}">TV & Home</a>
+                        </li>
+                        <li class="nav-item ms-5" sec:authorize="hasRole('ROLE_ADMIN')">
+                            <a class="nav-link" th:href="@{'/admin/'}">Admin Panel</a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item dropdown me-5">
+                            <a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" href="#"><i class="far fa-user"></i></a>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li sec:authorize="isAnonymous()"><a class="dropdown-item" style="color: #1a1e21" th:href="@{'/login'}">Login</a></li>
+                                <li sec:authorize="isAnonymous()"><a class="dropdown-item" style="color: #1a1e21" th:href="@{'/register'}">Register</a></li>
+                                <li sec:authorize="isAuthenticated()"><a class="dropdown-item" style="color: #1a1e21" th:href="@{'/profile'}">Profile</a></li>
+                                <li sec:authorize="hasRole('ROLE_ADMIN')"><a class="dropdown-item" style="color: #1a1e21" th:href="@{'/admin/'}">Admin Panel</a></li>
+                                <li sec:authorize="hasRole('ROLE_MODERATOR')"><a class="dropdown-item" style="color: #1a1e21" th:href="@{'/moderator/'}">Moderator</a></li>
+                                <li sec:authorize="isAuthenticated()"><a class="dropdown-item" style="color: #1a1e21"
+                                                                         href="JavaScript:void(0)" onclick="document.getElementById('LogoutFormId').submit()">Logout</a></li>
+                            </ul>
+                        </li>
+                        <li class="nav-item me-5">
+                            <a class="nav-link" th:href="@{'/cart/'}">
+                                <i class="fas fa-shopping-cart"></i></a>
+                        </li>
+                        <li class="nav-item me-5">
+                            <a class="nav-link" th:href="@{'/search'}">
+                                <i class="fas fa-search"></i></a>
+                        </li>
+                        <form th:action="@{'/logout'}" method="post" id="LogoutFormId" sec:authorize="isAuthenticated()">
+                        </form>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+</body>
+</html>

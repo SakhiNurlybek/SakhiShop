@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <title>Login Form | CodingLab</title> -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.2/css/all.min.css"/>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins',sans-serif;
+        }
+        body{
+            min-height: 700px;
+            background-color: #fff;
+        }
+        ::selection{
+            background: rgba(26,188,156,0.3);
+        }
+        .container{
+            max-width: 440px;
+            padding: 0 20px;
+            margin: 170px auto;
+        }
+        .wrapper{
+            width: 100%;
+            background: #fff;
+            border-radius: 5px;
+            box-shadow: 0px 4px 10px 1px rgba(0,0,0,0.1);
+        }
+        .wrapper .title{
+            height: 90px;
+            background-color: rgba(0,0,0,0.8);
+            border-radius: 5px 5px 0 0;
+            color: #fff;
+            font-size: 30px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .wrapper form{
+            padding: 30px 25px 25px 25px;
+        }
+        .wrapper form .row{
+            height: 45px;
+            margin-bottom: 15px;
+            position: relative;
+        }
+        .wrapper form .row input{
+            height: 100%;
+            width: 100%;
+            outline: none;
+            padding-left: 100px;
+            border-radius: 5px;
+            border: 1px solid lightgrey;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        form .row input:focus{
+            border-color: #16a085;
+            box-shadow: inset 0px 0px 2px 2px rgba(26,188,156,0.25);
+        }
+        form .row input::placeholder{
+            color: #999;
+        }
+        .wrapper form .row label{
+            position: absolute;
+            width: 90px;
+            height: 100%;
+            color: #fff;
+            font-size: 18px;
+            background-color: rgba(0,0,0,0.8);
+            border: 1px solid rgba(0,0,0,0.8);
+            border-radius: 5px 0 0 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .wrapper form .pass a{
+            color: #16a085;
+            font-size: 17px;
+            text-decoration: none;
+        }
+        .wrapper form .pass a:hover{
+            text-decoration: underline;
+        }
+        .wrapper form .button input{
+            color: #f5f5f7;
+            font-size: 20px;
+            font-weight: 500;
+            padding-left: 0px;
+            background-color: rgba(0,0,0,0.8);
+            border: 1px solid rgba(0,0,0,0.8);
+            cursor: pointer;
+        }
+        form .button input:hover{
+            background: #12876f;
+        }
+        .wrapper form .signup-link{
+            text-align: center;
+            margin-top: 20px;
+            font-size: 17px;
+        }
+        .wrapper form .signup-link a{
+            color: #16a085;
+            text-decoration: none;
+        }
+        form .signup-link a:hover{
+            text-decoration: underline;
+        }
+        .phoneBrand{
+            margin-top: 65px;
+        }
+        .color{
+            height: 200%;
+            width: 250px;
+            margin-left: 100px;
+            padding-left: 5px;
+            border-radius: 10px;
+            border: 2px solid lightgrey;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        .brand{
+            height: 100%;
+            width: 250px;
+            margin-left: 100px;
+            border: 2px solid lightgrey;
+            font-size: 14px;
+            transition: all 0.3s ease;
+        }
+        .phoneImage{
+            margin-top: 65px;
+        }
+        .phonePrice{
+            margin-top: 65px;
+        }
+        .dobavit{
+            position: absolute;
+            height: 100%;
+            width: 30px;
+        }
+        .addPhone{
+            margin-top: 65px;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="wrapper">
+        <div class="title">
+            <a th:href="@{'/admin/phone/'}" style="color: #f5f5f7; text-decoration: none">E-Shop</a>
+        </div>
+        <form th:action="@{'/admin/phone/add'}" method="post">
+            <div class="row">
+                <label>Name :</label>
+                <input type="text" name="phone_name" placeholder="Name">
+            </div>
+            <div class="row">
+                <label>Year :</label>
+                <input type="number" name="phone_year" placeholder="Year">
+            </div>
+            <div class="row">
+                <label>Height :</label>
+                <input type="number" name="phone_height" placeholder="Height">
+            </div>
+            <div class="row">
+                <label>Display :</label>
+                <input type="text" name="phone_display" placeholder="Display">
+            </div>
+            <div class="row">
+                <label>RAM :</label>
+                <input type="number" name="phone_ram" placeholder="Ram">
+            </div>
+            <div class="row phoneAmount" id="phoneAmount">
+                <div class="form-group">
+                    <label>Amount :</label>
+                    <input type="number" name="phone_amount[]" placeholder="Amount" style="width: 320px; height: 45px">
+                    <button type="button"  class="button dobavit" onclick="addInputAmount();"> + </button>
+                </div>
+            </div>
+            <div class="row phonePrice" id="phonePrice">
+                <div class="form-group">
+                    <label>Price :</label>
+                    <input type="number" name="phone_price[]" placeholder="Price" style="width: 320px; height: 45px">
+                    <button type="button"  class="button dobavit" onclick="addInputPrice();"> + </button>
+                </div>
+            </div>
+            <div class="row phoneBrand">
+                <label>Brand :</label>
+                <select class="form-control brand" name="phone_brand" id="brand">
+                    <option th:each="brand:${brandList}" th:text="${brand.name}" th:value="${brand.id}"></option>
+                </select>
+            </div>
+            <div class="row">
+                <label>Memory :</label>
+                <select class="form-control brand" name="phone_memory" id="memory">
+                    <option th:each="memory:${memoryList}" th:text="${memory.memory}" th:value="${memory.id}"></option>
+                </select>
+            </div>
+            <div class="row">
+                <label>Color :</label>
+                <select class="form-control color" multiple name="phone_colors[]">
+                    <option th:each="color:${colorList}" th:text="${color.name}" th:value="${color.id}"></option>
+                </select>
+                <div></div>
+            </div>
+            <div class="row phoneImage" id="phoneImage">
+                <div class="form-group">
+                    <label>Images </label>
+                    <input type="text" name="phone_images[]" placeholder="Images" style="width: 320px; height: 45px">
+                    <button type="button"  class="button dobavit" onclick="addInput();"> + </button>
+                </div>
+            </div>
+            <div class="row button addPhone">
+                <input type="submit" value="Add Phone">
+            </div>
+        </form>
+    </div>
+</div>
+<script>
+    function addInput(){
+        var newDiv = document.createElement('div');
+        newDiv.innerHTML = " <input type=\"text\" name=\"phone_images[]\" placeholder=\"Images\" style=\"width: 320px;height: 45px; margin-top: 10px\">\n" +
+            "                <button type=\"button\" style=\"margin-top: 10px\" class=\"button dobavit\" onclick=\"removeInput(this);\"> - </button>";
+        document.getElementById('phoneImage').appendChild(newDiv);
+    }
+    function addInputPrice() {
+        var newDiv = document.createElement('div');
+        newDiv.innerHTML = "<input type=\"number\" name=\"phone_price[]\" placeholder=\"Price\" style=\"width: 320px; height: 45px; margin-top: 10px\">\n" +
+            "                <button type=\"button\" style=\"margin-top: 10px\" class=\"button dobavit\" onclick=\"removeInput(this);\"> - </button>";
+        document.getElementById('phonePrice').appendChild(newDiv);
+    }
+    function addInputAmount() {
+        var newDiv = document.createElement('div');
+        newDiv.innerHTML = "<input type=\"number\" name=\"phone_amount[]\" placeholder=\"Amount\" style=\"width: 320px; height: 45px; margin-top: 10px\">\n" +
+            "                <button type=\"button\" style=\"margin-top: 10px\" class=\"button dobavit\" onclick=\"removeInput(this);\"> - </button>";
+        document.getElementById('phoneAmount').appendChild(newDiv);
+    }
+    function removeInput(btn){
+        btn.parentNode.remove();
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,139 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:insert="~{fragments/head.html}">
+</head>
+<body>
+<header th:insert="~{fragments/adminNavbar.html}"></header>
+<div class="container">
+    <div class="row">
+        <div class="col-6 offset-3">
+            <form th:action="@{'/admin/phone/save_details'}" method="post">
+                <input type="hidden" name="details_id" th:value="${phoneDetails.id}">
+                <div class="form-group">
+                    <label>Name:</label>
+                    <input type="text" class="form-control" name="phone_name" th:value="${phoneDetails!=null?phoneDetails.name:'---'}">
+                </div>
+                <div class="form-group">
+                    <label>Year:</label>
+                    <input type="number" class="form-control" name="phone_year" th:value="${phoneDetails!=null?phoneDetails.year:'---'}">
+                </div>
+                <div class="form-group">
+                    <label>Height:</label>
+                    <input type="number" step="any" class="form-control" name="phone_height" th:value="${phoneDetails!=null?phoneDetails.height:'---'}">
+                </div>
+                <div class="form-group">
+                    <label>Display:</label>
+                    <input type="text" class="form-control" name="phone_display" th:value="${phoneDetails!=null?phoneDetails.display:'---'}">
+                </div>
+                <div class="form-group">
+                    <label>RAM:</label>
+                    <input type="number" class="form-control" name="phone_ram" th:value="${phoneDetails!=null?phoneDetails.ram:'---'}">
+                </div>
+                <div class="form-group">
+                    <label>Brand:</label>
+                    <select class="form-control" name="brand_id">
+                        <option th:each="brand:${brands}" th:text="${brand.name}" th:value="${brand.id}" th:selected="${phoneDetails.brand!=null&&phoneDetails.brand.id==brand.id}"></option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <button class="btn btn-success">Save</button>
+                    <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#exampleModal">Delete</button>
+                </div>
+            </form>
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <form th:action="@{'/admin/phone/delete_details'}" method="post">
+                            <input type="hidden" name="details_id" th:value="${phoneDetails.id}">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Are you sure?</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button class="btn btn-danger">Delete</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-12">
+            <table class="table">
+                <thead class="table-danger">
+                    <tr>
+                        <th>Color</th>
+                        <th>Memory</th>
+                        <th>Price</th>
+                        <th>Amount</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="phone:${phones}">
+                        <form th:action="@{'/admin/phone/unassigncolor'}" method="post">
+                            <input type="hidden" th:value="${phone.id}" name="phone_id">
+                            <input type="hidden" th:value="${phoneDetails.id}" name="details_id">
+                            <td th:text="${phone.color.name}"></td>
+                            <td th:text="${phone.memory.memory}"></td>
+                            <td th:text="${phone.price}"></td>
+                            <td th:text="${phone.amount}"></td>
+                            <td style="width: 10%;">
+                                <button class="btn btn-primary"> - </button>
+                            </td>
+                        </form>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-12">
+            <table class="table">
+                <thead class="table-primary">
+                    <tr>
+                        <th>Color</th>
+                        <th>Memory</th>
+                        <th>Price</th>
+                        <th>Amount</th>
+                        <th>Image</th>
+                        <th>Add</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="color:${colors}">
+                        <form th:action="@{'/admin/phone/assigncolor'}" method="post">
+                            <input type="hidden" th:value="${phoneDetails.id}" name="details_id">
+                            <input type="hidden" th:value="${color.id}" name="color_id">
+                            <td th:text="${color.name}"></td>
+                            <td>
+                                <select class="form-control" name="memory_id">
+                                    <option th:each="memory:${memories}" th:text="${memory.memory}" th:value="${memory.id}"></option>
+                                </select>
+                            </td>
+                            <td>
+                                <input type="number" name="phone_price" class="form-control">
+                            </td>
+                            <td>
+                                <input type="number" name="phone_amount" class="form-control">
+                            </td>
+                            <td>
+                                <input type="text" name="phone_image" class="form-control">
+                            </td>
+                            <td style="width: 10%;">
+                                <button class="btn btn-primary"> + </button>
+                            </td>
+                        </form>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

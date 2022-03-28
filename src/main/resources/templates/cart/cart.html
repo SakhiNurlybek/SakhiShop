@@ -1,0 +1,52 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:insert="~{fragments/head.html}">
+</head>
+<body>
+<header th:insert="~{fragments/navbar.html}"></header>
+<div class="container">
+    <div class="row">
+        <div class="col-8">
+            <table class="table">
+                <thead class="table-success">
+                    <tr>
+                        <th>Count</th>
+                        <th>Name</th>
+                        <th>Photo</th>
+                        <th>Quantity</th>
+                        <th>Price</th>
+                        <th>SubTotal</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <th:block th:each="item,status:${cartItems}">
+                    <tr th:with="phone=${item.phone}">
+                        <td th:text="${status.count}"></td>
+                        <td th:text="${phone.phone.name}"></td>
+                        <td><img th:src="${phone.image}" style="width: 80px;"></td>
+                        <td>
+                            <div th:replace="quantity_control.html::quantity_control(${item.quantity},${item.phone.id})">Quantity</div>
+                        </td>
+                        <td th:text="${phone.price}"></td>
+                        <td th:text="${item.subtotal}"></td>
+                    </tr>
+                    </th:block>
+                </tbody>
+            </table>
+        </div>
+        <div class="col-4" th:unless="${#lists.isEmpty(cartItems)}">
+            <h3>
+                [Total Amount]
+            </h3>
+        </div>
+    </div>
+</div>
+<div th:if="${#lists.isEmpty(cartItems)}">
+    <h3>
+        You don't have any items.
+    </h3>
+</div>
+</body>
+<script th:src="@{/js/quantity_control.js}">
+</script>
+</html>

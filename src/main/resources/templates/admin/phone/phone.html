@@ -1,0 +1,82 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:insert="~{fragments/head.html}">
+</head>
+<body>
+<header th:insert="~{fragments/adminNavbar.html}"></header>
+<div class="container">
+    <div class="container mt-3">
+        <h2 class="text-center">Phone Details:</h2>
+        <table class="table">
+            <thead class="table-success">
+            <tr>
+               <th>ID</th>
+               <th>Name</th>
+               <th>Year</th>
+               <th>Height</th>
+               <th>Display</th>
+               <th>Ram</th>
+               <th>Brand</th>
+               <th>Colors</th>
+               <th>Edit</th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr th:each="phoneDetail:${phoneDetails}">
+                    <td th:text="${phoneDetail.id}"></td>
+                    <td th:text="${phoneDetail.name}"></td>
+                    <td th:text="${phoneDetail.year}"></td>
+                    <td th:text="${phoneDetail.height}"></td>
+                    <td th:text="${phoneDetail.display}"></td>
+                    <td th:text="${phoneDetail.ram}"></td>
+                    <td th:text="${phoneDetail.brand!=null?phoneDetail.brand.name:'---'}"></td>
+                    <td>
+                        <span th:each="phoneColor:${phoneDetail.colors}" th:text="${phoneColor!=null?phoneColor.name:'---'}" style="display: block"></span>
+                    </td>
+                    <td> <a th:href="@{'/admin/phone/edit_details/' + ${phoneDetail.id}}" class="btn btn-primary">Edit</a></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="container mt-3">
+        <h2 class="text-center">Phones:</h2>
+        <table class="table">
+            <thead class="table-success">
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Year</th>
+                <th>Height</th>
+                <th>Display</th>
+                <th>Ram</th>
+                <th>Price</th>
+                <th>Amount</th>
+                <th>Memory</th>
+                <th>Brand</th>
+                <th>Color</th>
+                <th>Details</th>
+                <th>Edit</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="phone:${phones}">
+                <td th:text="${phone.id}"></td>
+                <td th:text="${phone.phone.name}"></td>
+                <td th:text="${phone.phone.year}"></td>
+                <td th:text="${phone.phone.height}"></td>
+                <td th:text="${phone.phone.display}"></td>
+                <td th:text="${phone.phone.ram}"></td>
+                <td th:text="${phone.price}"></td>
+                <td th:text="${phone.amount}"></td>
+                <td th:text="${phone.memory!=null?phone.memory.memory:'---'}"></td>
+                <td th:text="${phone.phone.brand!=null?phone.phone.brand.name:'---'}"></td>
+                <td th:text="${phone.color!=null?phone.color.name:'---'}"></td>
+                <td> <a th:href="@{'/admin/phone/details/' + ${phone.id}}" class="btn btn-info">Details</a></td>
+                <td> <a th:href="@{'/admin/phone/edit/' + ${phone.id}}" class="btn btn-primary">Edit</a></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

@@ -1,0 +1,13 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:insert="~{fragments/head.html}">
+</head>
+<body>
+<header th:insert="~{fragments/adminNavbar.html}"></header>
+<div class="text-center mt-5">
+    <h3>
+        Welcome to <span th:text="${currentUser.firstName} +' Panel'"></span>
+    </h3>
+</div>
+</body>
+</html>
